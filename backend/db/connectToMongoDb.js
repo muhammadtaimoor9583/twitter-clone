@@ -4,10 +4,6 @@ export const connectMongoDb=async()=>{
     try {
         const conn= await mongoose.connect(process.env.Mongo_URI);
         console.log('connected');
-        const db=mongoose.connection.db;
-        const coll=await db.listCollections().toArray();
-        console.log(coll);
-        
     } catch (error) {
         console.log('Error occured in connecting to mongodb');
     }
