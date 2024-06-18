@@ -5,19 +5,19 @@ import { generateTokenAndSetCookie } from "../lib/utilis/generateToken.js";
 export const login=async(req,res)=>{
     const {username,password}=req.body;
     if(!username || !password){
-        return res.status(400).json({message:"Please fill all the fields"})
+        return res.status(400).json({error:"Please fill all the fields"})
     }
     const user=await User.findOne({username});
     const isMatch=await bcrypt.compare(password,user?user.password:"");
     if(!user || !isMatch){
-        return res.status(401).json({message:"Invalid email or password"})
+        return res.status(401).json({error:"Invalid email or password"})
     }
     generateTokenAndSetCookie(user._id,res);
     res.json({message:"Logged in successfully"})
 }
 export const signup=async(req,res)=>{
     try{
-    const {email,username,fullname,password}=req.body;
+    const {email,username,fullName:fullname,password}=req.body;
     if(!validator.isEmail(email)){
         console.log(`${Email} is not valid`);
         return res.status(400).json({error:"Email is not valid"});
