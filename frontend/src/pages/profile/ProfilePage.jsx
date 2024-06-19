@@ -33,7 +33,7 @@ const ProfilePage = () => {
 		link: "https://youtube.com/@asaprogrammer_",
 		following: ["1", "2", "3"],
 		followers: ["1", "2", "3"],
-	};
+	}; 
 
 	const handleImgChange = (e, state) => {
 		const file = e.target.files[0];
