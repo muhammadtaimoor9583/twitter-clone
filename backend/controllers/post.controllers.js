@@ -131,6 +131,7 @@ export const commentOnPost=async (req,res)=>{
     const {text}=req.body;
     const userId=req.user._id;
     try {
+        
         const post=await Post.findById(id);
         if(!post){
             return res.status(404).json({message:"Post not found"})
@@ -141,7 +142,8 @@ export const commentOnPost=async (req,res)=>{
         const comment={user:userId,text};
         post.comments.push(comment);
         await post.save();
-        res.status(200).json({message:"Comment added successfully"});
+        const updatedComments=post.comments;
+        res.status(200).json(updatedComments);
 
     } catch (error) {
         console.log("Error in commentOnPost controller",error.message);
