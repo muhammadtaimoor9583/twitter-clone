@@ -8,6 +8,8 @@ const app=express();
 import authRouter from './routes/auth.route.js'
 import userRouter from './routes/user.route.js'
 import postRouter from './routes/post.route.js'
+import Notification from "./routes/notification.route.js"
+
 import { connectMongoDb } from "./db/connectToMongoDb.js";
 
 import cookieParser from "cookie-parser";
@@ -35,6 +37,7 @@ app.use(cookieParser());
 app.use('/api/auth',authRouter);
 app.use('/api/user',userRouter);
 app.use('/api/post',postRouter);
+app.use('/api/notification',Notification);
 app.listen(PORT,()=>{
     console.log(`The port is listening at ${PORT}`);
     connectMongoDb();

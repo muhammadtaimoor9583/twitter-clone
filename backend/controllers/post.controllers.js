@@ -154,8 +154,9 @@ export const commentOnPost=async (req,res)=>{
 
 
 export const getLikedPosts=async(req,res)=>{
-    const {id:userId}=req.params.id;
+    const {id:userId}=req.params;
     try {
+        console.log(userId)
         const user=await User.findById(userId);
         const likedPosts=await Post.find({_id:{$in: user.likedPosts}})
         .populate({

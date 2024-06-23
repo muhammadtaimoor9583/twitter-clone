@@ -3,13 +3,17 @@ import PostSkeleton from "../skeletons/PostSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-const Posts = ({ feedType }) => {
+const Posts = ({ feedType,username,id }) => {
   const getFeedPosts = () => {
     if (feedType === "all") {
       return "http://localhost:5000/api/post/all";
     } else if (feedType === "following") {
       return "http://localhost:5000/api/post/feedPosts";
-    } else {
+    }else if(feedType == 'posts') {
+      return `http://localhost:5000/api/post/user/${username}`;
+    }else if(feedType === 'liked'){
+      return `http://localhost:5000/api/post/likes/${id}`;
+    }else {
       return "http://localhost:5000/api/post/all";
     }
   };

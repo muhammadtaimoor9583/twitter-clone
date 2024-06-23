@@ -8,13 +8,14 @@ import Notification from "../models/notification.model.js";
 export const getUserProfile = async (req, res) => {
     const { username } = req.params;
     try {
-        if (username === req.user.username) {
-            const user = req.user;
-            res.status(200).json({ user });
+        const user=await User.findOne({username:username});
+        if(!user){
+            return res.status(404).json({error:'User not found'});
         }
-        else {
-            res.status(401).json({ message: "Unauthorized" });
-        }
+        user.password=null;
+        console.log(user);
+        return res.status(200).json(user);
+       
     } catch (error) {
         console.log('Error in getuserProfile controller', error.message);
         res.status(500).json({ error: "Internal server error" });
