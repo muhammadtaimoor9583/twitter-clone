@@ -8,7 +8,7 @@ import Notification from "../models/notification.model.js";
 export const getUserProfile = async (req, res) => {
     const { username } = req.params;
     try {
-        const user=await User.findOne({username:username});
+        const user=await User.findOne({username});
         if(!user){
             return res.status(404).json({error:'User not found'});
         }
@@ -85,12 +85,13 @@ export const getSuggestedUser=async (req,res)=>{
 }
 
 export const updateUser = async (req, res) => {
-    const { fullname, email, currentPassword, newPassword, link, bio } = req.body;
+    const { fullname, email, username, currentPassword, newPassword, link, bio } = req.body;
     let { profileImg, coverImg } = req.body;
 
     const userId = req.user._id;
     try {
-        let user = await findById(userId);
+        let user = await User.findById(userId);
+        let hashedPassword='';
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -102,21 +103,21 @@ export const updateUser = async (req, res) => {
             if (!isMatch) {
                 return res.status(400).json({ message: 'Incorrect current password' });
             }
+            const salt = await bcrypt.genSalt(10);
+            hashedPassword = await bcrypt.hash(newPassword, salt);
         }
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(newPassword, salt);
 
         if (profileImg) {
             if (user.profileImg) {
-                await cloudinary.uploader.destroy(profileImg.slipt('/').pop().split('.')[0]);
+                await cloudinary.uploader.destroy(profileImg.split('/').pop().split('.')[0]);
             }
             const repondedUrl = await cloudinary.uploader.upload(profileImg);
             profileImg = repondedUrl.secure_url;
         }
         if (coverImg) {
             if (user.coverImg) {
-                await cloudinary.uploader.destroy(coverImg.slipt('/').pop().split('.')[0]);
+                await cloudinary.uploader.destroy(coverImg.split('/').pop().split('.')[0]);
             }
             const repondedUrl = await cloudinary.uploader.upload(coverImg);
             coverImg = repondedUrl.secure_url;
@@ -126,7 +127,7 @@ export const updateUser = async (req, res) => {
         user.fullname = fullname || user.fullname;
         user.email = email || user.email;
         user.username = username || user.username;
-        user.password = newPassword || user.password;
+        user.password = hashedPassword || user.password;
         user.link = link || user.link;
         user.bio = bio || user.bio;
         user.profileImg = profileImg || user.profileImg

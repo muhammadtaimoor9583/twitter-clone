@@ -6,5 +6,5 @@ import {getUserProfile,followUnfollowUser,updateUser,getSuggestedUser} from "../
 router.get('/profile/:username',getUserProfile);
 router.post('/follow/:id',protectRoute,followUnfollowUser);
 router.get('/suggested',protectRoute,getSuggestedUser);
-router.get('/update',protectRoute,updateUser);
+router.post('/update',protectRoute,updateUser);
 export default router;

@@ -25,9 +25,9 @@ function App() {
 				credentials:'include'
 			});
 		const data=await res.json();
-		if(data.error) return null;
+		if(data.error || 'Something went wrong') return null;
 		if(!res.ok){
-			throw new Error(data.error);
+			throw new Error(data.error || 'Something went wrong');
 		}
 		console.log(data);
 		return data;
