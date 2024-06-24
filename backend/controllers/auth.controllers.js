@@ -82,7 +82,6 @@ export const logout=(req,res)=>{
 
 export const getMe=async(req,res)=>{
     try {
-        console.log('I will tell you who you are(auth or not auth');
         const user=await User.findById(req.user._id).select('-password');
         res.status(200).json(user);
     } catch (error) {

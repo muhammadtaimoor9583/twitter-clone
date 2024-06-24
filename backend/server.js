@@ -1,4 +1,5 @@
 import express from "express";
+import path from 'path';
 import dotenv from 'dotenv';
 import {v2 as cloudinary} from 'cloudinary';
 import cors from 'cors'
@@ -22,6 +23,7 @@ const corsOptions = {
   
 app.use(cors(corsOptions));
   
+const __dirname=path.resolve();
 
 dotenv.config();
 cloudinary.config({
@@ -38,6 +40,13 @@ app.use('/api/auth',authRouter);
 app.use('/api/user',userRouter);
 app.use('/api/post',postRouter);
 app.use('/api/notification',Notification);
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname,'frontend/dist')));
+    app.get('*',(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'frontend','dist','index.html'));
+    
+    })
+}
 app.listen(PORT,()=>{
     console.log(`The port is listening at ${PORT}`);
     connectMongoDb();

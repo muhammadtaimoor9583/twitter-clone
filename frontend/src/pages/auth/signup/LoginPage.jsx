@@ -37,14 +37,12 @@ const LoginPage = () => {
 			}
 		},
 		onSuccess:()=>{
-			toast.success('Logged in successfully');
 			queryClient.invalidateQueries({queryKey:['authUser']});
 		}
 	})
 
 	const handleSubmit = async(e) => {
 		e.preventDefault();
-		console.log(formData);
 		await mutate(formData);
 		if(!isPending){
 			console.log(error);
