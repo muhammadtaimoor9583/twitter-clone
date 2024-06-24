@@ -40,10 +40,7 @@ function App() {
 	retry:false
   });
   if(isLoading){
-	return <div className="d-flex justify-center align-middle">{<LoadingSpinner/>}</div>
-  }
-  if(isSuccess){
-	  console.log(authUser?.username);
+	return <div className="flex items-center justify-center min-h-screen">{<LoadingSpinner/>}</div>
   }
 
   return (
