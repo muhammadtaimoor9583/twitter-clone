@@ -4,9 +4,10 @@ import LoadingSpinner from "../../components/common/LoadingSpinner";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const NotificationPage = () => {
+	const queryClient=useQueryClient();
 	const {data:notifications,isLoading}=useQuery({
 		queryKey:['notifications'],
 		queryFn:async()=>{
@@ -41,12 +42,19 @@ const NotificationPage = () => {
 			} catch (error) {
 				throw new Error(error);
 			}
+		},
+		onSuccess:()=>{
+			queryClient.invalidateQueries({queryKey:['notifications']});
+		
 		}
 	})
 
 
 	return (
 		<>
+			{ isPending ? 
+			<div  className='flex-[4_4_0] border-l border-r border-gray-700 min-h-screen'><LoadingSpinner/></div>: 
+
 			<div className='flex-[4_4_0] border-l border-r border-gray-700 min-h-screen'>
 				<div className='flex justify-between items-center p-4 border-b border-gray-700'>
 					<p className='font-bold'>Notifications</p>
@@ -90,7 +98,11 @@ const NotificationPage = () => {
 					</div>
 				))}
 			</div>
+			
+
+			}
 		</>
 	);
+
 };
 export default NotificationPage;

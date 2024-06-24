@@ -37,6 +37,7 @@ const LoginPage = () => {
 			}
 		},
 		onSuccess:()=>{
+			toast.success('Logged in successfully');
 			queryClient.invalidateQueries({queryKey:['authUser']});
 		}
 	})
@@ -86,7 +87,7 @@ const LoginPage = () => {
 							value={formData.password}
 						/>
 					</label>
-					<button className='btn rounded-full btn-primary text-white'>Login</button>
+					<button className='btn rounded-full btn-primary text-white'>{ !isPending ? 'Login':'Loading...'}</button>
 					
 					{isError && <p className='text-red-500'>{error.message}</p> }
 				</form>

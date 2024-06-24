@@ -16,7 +16,7 @@ import LoadingSpinner from "./components/common/LoadingSpinner";
 
 function App() {
   const [count, setCount] = useState(0);
-  const {data:authUser,isLoading,isError,error}=useQuery({
+  const {data:authUser,isLoading,isError,error,isSuccess}=useQuery({
 	queryKey:['authUser'],
 	queryFn:async()=>{
 		try {
@@ -25,7 +25,7 @@ function App() {
 				credentials:'include'
 			});
 		const data=await res.json();
-		if(data.error || 'Something went wrong') return null;
+		if(data.error) return null;
 		if(!res.ok){
 			throw new Error(data.error || 'Something went wrong');
 		}
@@ -41,6 +41,9 @@ function App() {
   });
   if(isLoading){
 	return <div className="d-flex justify-center align-middle">{<LoadingSpinner/>}</div>
+  }
+  if(isSuccess){
+	  console.log(authUser?.username);
   }
 
   return (
